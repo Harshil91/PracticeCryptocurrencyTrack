@@ -8,6 +8,8 @@ class CryptoApp {
 
   updateCoinTable(){
     let tableBody = document.getElementById('tableBody');
+
+
     Object.keys(this.coinData).forEach(coinKey => {
       let coin = this.coinData[coinKey];
       let coinTableEntry = document.createElement('tr');
@@ -49,11 +51,12 @@ class CryptoApp {
       coinData.Data.forEach(coin => {
         this.coinData[coin.CoinInfo.Name] = coin.CoinInfo;
       });
-      this.updateCoinDataPrice();
+      this.updateCoinDataPrices();
+      setInterval(this.updateCoinDataPrices.bind(this), 6000);
     });
   }
 
-  updateCoinDataPrice(){
+  updateCoinDataPrices(){
     this.makeApiCall(COIN_PRICE_ENDPOINT + Object.keys(this.coinData).join(','), coinPrices => {
       Object.keys(coinPrices).forEach(coinPriceKey => {
         this.coinData[coinPriceKey].Price = coinPrices [coinPriceKey].USD
@@ -67,4 +70,3 @@ class CryptoApp {
 const crypto = new CryptoApp();
 crypto.start();
 
-// const COIN_PRICE_ENDPOINT = 'https://min-api.cryptocompare.com/data/pricemulti?tsyms=USD&api_key=5927a4aaf8b7d4f68a9eabc906e925276874447b1ff795e6e86685143d20bacb&fsyms=';
