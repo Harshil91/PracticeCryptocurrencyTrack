@@ -6,8 +6,23 @@ class CryptoApp {
     this.coinData = {};
   }
 
+  makeApiCall(endPoint, callback){
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200){
+        callback (JSON.parse(this.response));
+      }
+    }
+    xhttp.open("GET", endPoint, true);
+    xhttp.send();
+  }
 
   start (){
-
+    this.makeApiCall(COIN_INFO_ENDPOINT, coinData => {
+      console.log(coinData);
+    });
   }
 }
+
+const crypto = new CryptoApp();
+crypto.start();
